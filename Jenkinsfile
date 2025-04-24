@@ -11,12 +11,10 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        // clean workspace then checkout
         cleanWs()
         checkout([
           $class: 'GitSCM',
           branches: [[ name: '*/main' ]],
-          doGenerateSubmoduleConfigurations: false,
           extensions: [ [ $class: 'CleanBeforeCheckout' ] ],
           userRemoteConfigs: [[ url: 'https://github.com/Quintel473/WebApp-DevOps.git' ]]
         ])
@@ -43,9 +41,15 @@ pipeline {
 
     stage('Deploy to AWS EC2') {
       steps {
-        sshagent (credentials: ['ec2-ssh-key']) {
+        // Bind your SSH key credential to a temp file (KEYFILE) and username (SSH_USER)
+        withCredentials([sshUserPrivateKey(
+          credentialsId: 'ec2-ssh-key',
+          keyFileVariable: 'KEYFILE',
+          usernameVariable: 'SSH_USER'
+        )]) {
+          // Use that key to SSH & deploy
           sh """
-            ssh -o StrictHostKeyChecking=no ec2-user@\$EC2_HOST \\
+            ssh -i \$KEYFILE -o StrictHostKeyChecking=no \$SSH_USER@\$EC2_HOST \\
               'docker pull \$DOCKER_IMAGE:\$DOCKER_TAG && \\
                docker rm -f \$CONTAINER || true && \\
                docker run -d -p 80:80 --name \$CONTAINER \$DOCKER_IMAGE:\$DOCKER_TAG'
@@ -56,11 +60,7 @@ pipeline {
   }
 
   post {
-    success {
-      echo '✔ Pipeline succeeded — app is deployed!'
-    }
-    failure {
-      echo '✘ Pipeline failed. Check the logs above.'
-    }
+    success { echo '✔ Pipeline succeeded — app is deployed!' }
+    failure { echo '✘ Pipeline failed. Check the logs above.' }
   }
 }
