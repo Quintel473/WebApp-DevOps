@@ -1,13 +1,12 @@
-# Use an official Nginx image
-FROM nginx:latest
+FROM nginx:alpine
 
-# Copy static files from your local repository to the container
-COPY ./index.html /usr/share/nginx/html/
-COPY ./styles.css /usr/share/nginx/html/
-COPY ./script.js  /usr/share/nginx/html/
+# Clear default nginx HTML content
+RUN rm -rf /usr/share/nginx/html/*
 
-# Expose port 80 to make the app accessible
+# Copy all files from your project directory into nginx's web directory
+COPY . /usr/share/nginx/html/
+
+# Expose port 80
 EXPOSE 80
 
-# Start Nginx server
 CMD ["nginx", "-g", "daemon off;"]
