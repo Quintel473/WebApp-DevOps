@@ -6,7 +6,7 @@ pipeline {
     DOCKER_IMAGE = 'quintelcharles021/webapp-devops'
     DOCKER_TAG   = 'latest'
 
-    // ← change to your EC2 public or Elastic IP or DNS
+    // ← your EC2 public or Elastic IP
     EC2_HOST     = '44.208.89.64'
 
     // name for the container on EC2
@@ -16,10 +16,10 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        // explicitly clean & checkout the main branch
+        // correctly clean & checkout the main branch
         git branch: 'main',
             url:    'https://github.com/Quintel473/WebApp-DevOps.git',
-            cleanBeforeCheckout: true
+            clean:  true
       }
     }
 
@@ -35,7 +35,7 @@ pipeline {
     stage('Push Docker Image') {
       steps {
         script {
-          // uses the 'docker-hub-credentials' id you configured in Jenkins
+          // uses the 'docker-hub-credentials' id in Jenkins
           docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
             docker.image(DOCKER_IMAGE).push(DOCKER_TAG)
           }
@@ -47,7 +47,7 @@ pipeline {
       steps {
         // ssh-agent wrapper for your EC2 SSH key credential
         sshagent (credentials: ['ec2-ssh-key']) {
-          // SSH into EC2, pull new image, remove old container, run new one
+          // SSH into EC2, pull the new image, remove old container, run new one
           sh """
             ssh -o StrictHostKeyChecking=no ec2-user@\$EC2_HOST \\
               'docker pull \$DOCKER_IMAGE:\$DOCKER_TAG && \\
