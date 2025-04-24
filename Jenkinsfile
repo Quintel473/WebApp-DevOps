@@ -41,18 +41,17 @@ pipeline {
 
     stage('Deploy to AWS EC2') {
       steps {
-        // Bind your SSH key credential to a temp file (KEYFILE) and username (SSH_USER)
         withCredentials([sshUserPrivateKey(
           credentialsId: 'ec2-ssh-key',
           keyFileVariable: 'KEYFILE',
           usernameVariable: 'SSH_USER'
         )]) {
-          // Use that key to SSH & deploy
+          // Use Groovy ${} so DOCKER_IMAGE, DOCKER_TAG and CONTAINER are substituted locally
           sh """
             ssh -i \$KEYFILE -o StrictHostKeyChecking=no \$SSH_USER@\$EC2_HOST \\
-              'docker pull \$DOCKER_IMAGE:\$DOCKER_TAG && \\
-               docker rm -f \$CONTAINER || true && \\
-               docker run -d -p 80:80 --name \$CONTAINER \$DOCKER_IMAGE:\$DOCKER_TAG'
+              "docker pull ${DOCKER_IMAGE}:${DOCKER_TAG} && \\
+               docker rm -f ${CONTAINER} || true && \\
+               docker run -d -p 80:80 --name ${CONTAINER} ${DOCKER_IMAGE}:${DOCKER_TAG}"
           """
         }
       }
