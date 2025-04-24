@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Quintel473/WebApp-DevOps.git'
+                git branch: 'main', url: 'https://github.com/Quintel473/WebApp-DevOps.git'
             }
         }
 
@@ -24,7 +24,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-creds') {
                         docker.image(DOCKER_IMAGE).push(DOCKER_TAG)
                     }
                 }
