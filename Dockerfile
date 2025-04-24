@@ -1,12 +1,12 @@
 # Use an official Nginx image to serve the app
 FROM nginx:alpine
 
-# Copy the HTML and CSS files to the correct directory
-COPY Index.html /usr/share/nginx/html/
+# Copy files into the correct nginx directory
+COPY index.html /usr/share/nginx/html/
 COPY styles.css /usr/share/nginx/html/
 
-# Expose port 80 to the host
+# Expose port 80
 EXPOSE 80
 
-# Start Nginx
+# Run Nginx in foreground
 CMD ["nginx", "-g", "daemon off;"]
