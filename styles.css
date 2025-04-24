@@ -1,3 +1,4 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
@@ -6,6 +7,7 @@ body {
     padding: 0;
 }
 
+/* Header Styles */
 header {
     background-color: #4CAF50;
     color: white;
@@ -13,11 +15,13 @@ header {
     text-align: center;
 }
 
+/* Main Content Styles */
 main {
     padding: 20px;
     text-align: center;
 }
 
+/* Footer Styles */
 footer {
     background-color: #4CAF50;
     color: white;
@@ -26,4 +30,60 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
+}
+
+/* Button Styles */
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Input Styles */
+input[type="text"], input[type="email"], input[type="password"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Form Container Styles */
+form {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Media Queries for Responsiveness */
+@media screen and (max-width: 600px) {
+    header, footer {
+        padding: 10px;
+    }
+    
+    main {
+        padding: 10px;
+    }
+
+    form {
+        width: 95%;
+    }
+
+    button {
+        width: 100%;
+    }
 }

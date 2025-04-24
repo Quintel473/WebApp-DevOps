@@ -4,6 +4,7 @@ FROM nginx:latest
 # Copy static files from your local repository to the container
 COPY ./index.html /usr/share/nginx/html/
 COPY ./styles.css /usr/share/nginx/html/
+COPY ./script.js  /usr/share/nginx/html/
 
 # Expose port 80 to make the app accessible
 EXPOSE 80
