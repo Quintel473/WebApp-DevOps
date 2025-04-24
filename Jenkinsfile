@@ -6,6 +6,7 @@ pipeline {
     DOCKER_TAG   = 'latest'
     EC2_HOST     = '44.208.89.64'
     CONTAINER    = 'webapp-devops-container'
+    HOST_PORT    = '8081'              // ← new
   }
 
   stages {
@@ -46,12 +47,11 @@ pipeline {
           keyFileVariable: 'KEYFILE',
           usernameVariable: 'SSH_USER'
         )]) {
-          // Use Groovy ${} so DOCKER_IMAGE, DOCKER_TAG and CONTAINER are substituted locally
           sh """
             ssh -i \$KEYFILE -o StrictHostKeyChecking=no \$SSH_USER@\$EC2_HOST \\
               "docker pull ${DOCKER_IMAGE}:${DOCKER_TAG} && \\
                docker rm -f ${CONTAINER} || true && \\
-               docker run -d -p 80:80 --name ${CONTAINER} ${DOCKER_IMAGE}:${DOCKER_TAG}"
+               docker run -d -p ${HOST_PORT}:80 --name ${CONTAINER} ${DOCKER_IMAGE}:${DOCKER_TAG}"
           """
         }
       }
@@ -59,7 +59,7 @@ pipeline {
   }
 
   post {
-    success { echo '✔ Pipeline succeeded — app is deployed!' }
+    success { echo '✔ Pipeline succeeded — app is deployed on port ' + env.HOST_PORT }
     failure { echo '✘ Pipeline failed. Check the logs above.' }
   }
 }
