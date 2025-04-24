@@ -25,11 +25,11 @@ main {
 footer {
     background-color: #4CAF50;
     color: white;
-    padding: 10px;
+    padding: 1px;
     text-align: center;
     position: fixed;
     bottom: 0;
-    width: 90%;
+    width: 100%;
 }
 
 /* Button Styles */
