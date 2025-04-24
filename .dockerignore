@@ -1,0 +1,32 @@
+# Ignore the Dockerfile itself (though it's usually required for builds, so comment this out if you want to keep it)
+# Dockerfile
+
+# Ignore version control directories
+.git
+.gitignore
+
+# Ignore node_modules (if you are using Node.js)
+node_modules/
+
+# Ignore build artifacts or directories
+build/
+dist/
+out/
+
+# Ignore IDE or editor directories
+.vscode/
+.idea/
+
+# Ignore local configuration files
+*.log
+*.env
+*.bak
+*.swp
+
+# Ignore any other temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Optionally, you can add any other files that you don't want in your image here
