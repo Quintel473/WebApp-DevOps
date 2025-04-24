@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'quintelcharles021/WebApp-DevOps'
+        DOCKER_IMAGE = 'quintelcharles021/webapp-devops'
         DOCKER_TAG = 'latest'
     }
 
